@@ -1,4 +1,5 @@
 import 'package:bloc_concepts/Counter/counter_bloc.dart';
+import 'package:bloc_concepts/second.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,6 +8,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
@@ -77,30 +79,96 @@ class MyHomePage extends StatelessWidget {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            Row(mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(padding: EdgeInsets.only(left: 0),
+                  child: InkWell(
+                    onTap: () {
+                      context.read<CounterBloc>().add(Decrement());
+                    },
+                    child: const SizedBox(
+
+                      width: 120,
+                      height: 55,
+                      child: DecoratedBox(
+                        child: Icon(Icons.remove, color: Colors.white,),
+                        decoration: BoxDecoration(
+                            color: Colors.deepPurple
+                        ),
+                      ),
+
+                    ),
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: BlocBuilder<CounterBloc, CounterState>(
+                      builder: (context, state) {
+
+
+                        return Text('${state.count}', style: const TextStyle(fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),);
+                      },
+                    )),
+                Padding(padding: EdgeInsets.only(left: 15),
+                  child: InkWell(
+                    onTap: () {
+                      context.read<CounterBloc>().add(Increment());
+                    },
+                    child: const SizedBox(
+
+                      width: 120,
+                      height: 55,
+                      child: DecoratedBox(
+                        child: Icon(Icons.add, color: Colors.white,),
+                        decoration: BoxDecoration(
+                            color: Colors.red
+                        ),
+                      ),
+
+                    ),
+                  ),
+                ),
+
+
+              ],
             ),
-            BlocBuilder<CounterBloc, CounterState>(
-              builder: (context, state) {
-                return Text(
-                  '${state.count}',
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline4,
-                );
-              },
+            Padding(
+              padding:  EdgeInsets.only(top: 15),
+              child: Align(
+                alignment: Alignment.center,
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CovidPage()),
+                    );
+
+
+
+                  },
+                  child: SizedBox(
+
+                    width: 150,
+                    height: 55,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.amber,
+
+                      ),
+                      child: Center(child: Text( textAlign: TextAlign.center,"Next Page",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white),)),
+                    ),
+                  ),
+                ),
+              ),
             ),
+
+
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.read<CounterBloc>().add(Increment());
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
